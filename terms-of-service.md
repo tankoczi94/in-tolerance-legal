@@ -1,15 +1,7 @@
 # Terms of Service & End User License Agreement — in-tolerance
 
-> **STATUS: DRAFT — pending legal review and placeholder fill-in.**
-> Source draft for App Store compliance spec step 1.2. A qualified reviewer
-> must confirm enforceability in `{{GOVERNING_JURISDICTION}}`, fill every
-> `{{PLACEHOLDER}}`, and verify the Apple-required UGC and subscription
-> clauses are present and accurate before hosting (step 1.3) and
-> submission. The no-medical-advice disclaimer here must stay consistent
-> with the in-app first-run disclaimer and the Privacy Policy (spec 5.4).
-
-**Effective date:** {{EFFECTIVE_DATE}}
-**Provider:** {{LEGAL_ENTITY}}, {{BUSINESS_ADDRESS}}
+**Effective date:** May 24, 2026
+**Provider:** Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
 ---
@@ -129,7 +121,7 @@ app contains no external-purchase links.
 ## 9. Intellectual property
 
 The app, its name, design, and code (excluding your User Content and
-third-party food data) are owned by {{LEGAL_ENTITY}} and protected by law.
+third-party food data) are owned by Tamas Tankoczi and protected by law.
 Food data is provided by FatSecret and USDA FoodData Central under their
 respective terms.
 
@@ -148,7 +140,7 @@ warranty of merchantability, fitness for a particular purpose, accuracy of
 food data, or non-infringement. We do not warrant that pattern suggestions
 are accurate or that the service will be uninterrupted or error-free.
 
-To the maximum extent permitted by law, {{LEGAL_ENTITY}} is not liable for
+To the maximum extent permitted by law, Tamas Tankoczi is not liable for
 any indirect, incidental, special, consequential, or punitive damages, or
 for any health outcome arising from use of or reliance on the app. Where
 liability cannot be excluded, it is limited to the amount you paid us in
@@ -158,12 +150,12 @@ or personal injury caused by negligence, or fraud).
 
 ## 12. Indemnity
 
-You agree to indemnify {{LEGAL_ENTITY}} against claims arising from your
+You agree to indemnify Tamas Tankoczi against claims arising from your
 User Content or your breach of these Terms, to the extent permitted by law.
 
 ## 13. Governing law
 
-These Terms are governed by the laws of {{GOVERNING_JURISDICTION}}, without
+These Terms are governed by the laws of Hungary, without
 regard to conflict-of-law rules, and subject to any mandatory consumer
 protections of your country of residence. Nothing here removes statutory
 consumer rights.
@@ -177,11 +169,8 @@ acceptance. The Effective date above reflects the current version.
 ## 15. Contact
 
 **support@in-tolerance.app**
-{{LEGAL_ENTITY}}, {{BUSINESS_ADDRESS}}
+Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
 
 ---
 
-*Draft prepared 2026-05-17 as part of App Store compliance (spec step 1.2).
-Not legal advice; requires review by a qualified professional before
-publication. Apple's standard EULA is incorporated where the app is
-distributed via the App Store.*
+*Apple's standard EULA is incorporated where the app is distributed via the App Store.*

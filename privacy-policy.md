@@ -1,21 +1,8 @@
 # Privacy Policy — in-tolerance
 
-> **STATUS: DRAFT — pending legal review and placeholder fill-in.**
-> This is a source draft for App Store compliance spec step 1.1. Before
-> hosting (step 1.3) and submission, a qualified reviewer must (a) confirm
-> jurisdictional accuracy (GDPR / CCPA / local law), (b) fill every
-> `{{PLACEHOLDER}}`, and (c) keep this consistent with the App Store Connect
-> Privacy "Nutrition Label" answers (spec Appendix A) — Apple rejects when
-> the two disagree.
->
-> Placeholders to fill: `{{LEGAL_ENTITY}}` (individual or company name that
-> owns the app), `{{BUSINESS_ADDRESS}}`, `{{GOVERNING_JURISDICTION}}`,
-> `{{EFFECTIVE_DATE}}`. Support contact is `support@in-tolerance.app` (must
-> be a live inbox before submission — Open Decisions #7).
-
-**Effective date:** {{EFFECTIVE_DATE}}
-**Last updated:** {{EFFECTIVE_DATE}}
-**Data controller:** {{LEGAL_ENTITY}}, {{BUSINESS_ADDRESS}}
+**Effective date:** May 24, 2026
+**Last updated:** May 24, 2026
+**Data controller:** Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
 ---
@@ -114,7 +101,7 @@ the United States. Where required, transfers rely on appropriate safeguards
 (e.g. EU Standard Contractual Clauses). Contact us for details.
 
 This policy is governed together with our Terms of Service; the governing
-law and forum are set out there ({{GOVERNING_JURISDICTION}}), subject to
+law and forum are set out there (Hungary), subject to
 the mandatory data-protection rights of your country of residence.
 
 ## 6. Data retention
@@ -167,7 +154,7 @@ In the EEA/UK the minimum age at which a person can consent to data
 processing without parental authorization varies by country (13–16 under
 GDPR Art. 8). Where you are below that age in your country, a parent or
 guardian must consent on your behalf. *(The exact threshold per
-jurisdiction is subject to the legal review noted in the status banner.)*
+jurisdiction varies by country.)*
 
 ## 9. Security
 
@@ -186,10 +173,5 @@ reflects the current version.
 ## 11. Contact
 
 Questions or privacy requests: **support@in-tolerance.app**
-{{LEGAL_ENTITY}}, {{BUSINESS_ADDRESS}}
+Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
 
----
-
-*Draft prepared 2026-05-17 as part of App Store compliance (spec step 1.1).
-Not legal advice; requires review by a qualified professional before
-publication.*
