@@ -1,7 +1,7 @@
 # Privacy Policy — in-tolerance
 
 **Effective date:** May 24, 2026
-**Last updated:** May 24, 2026
+**Last updated:** May 28, 2026
 **Data controller:** Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
@@ -29,7 +29,7 @@ data, and we do **not** use it for advertising or cross-app tracking.
 | Identifiers | Account identifier (UUID) | Linking your records to your account |
 | Health & Fitness | Food intolerances you declare; food log entries (meal type, time, notes); symptom check-ins (severity, onset, duration, notes); sleep-quality logs; pattern alerts derived from the above | Core app functionality — logging and pattern analysis |
 | User content | Free-text notes on logs; community food submissions you choose to publish | Core app functionality; optional community feature |
-| Purchases | Subscription status (if/when paid plans launch) | To unlock paid features |
+| Purchases | Subscription status | To unlock paid features |
 | Diagnostics | Crash reports and basic device/OS diagnostic context | Stability — diagnosing and fixing crashes. **Not linked to your identity** (no account ID or email is attached) |
 
 **Special-category data.** Food-intolerance, symptom, and sleep data may
@@ -79,8 +79,9 @@ function and is bound by a data-processing agreement or equivalent terms.
 | Railway | Backend application hosting | All API traffic in transit; logs may contain user IDs | Yes — sub-processor under terms |
 | FatSecret | Food & barcode lookup | Search terms / barcode strings only — sent from our backend. **No** email, user ID, or device data | No |
 | USDA FoodData Central | Food data fallback | Search terms only — sent from our backend (public-domain API) | No |
-| Apple (StoreKit) | Subscription payments (if launched) | Purchase/subscription state | Yes — Apple-managed |
-| RevenueCat (if/when paid plans launch) | Subscription/entitlement management | Apple App-User identifier, subscription state | Yes — sub-processor |
+| Apple (StoreKit) | Subscription payments | Purchase/subscription state | Yes — Apple-managed |
+| RevenueCat | Subscription and entitlement management | Apple App-User identifier, subscription state | Yes — sub-processor |
+| Google LLC (Gemini API) | AI-powered weekly insights, food matching, and dietitian tips (Pro users only) | Food logs, symptom check-ins, sleep scores — sent server-side only; no Gemini SDK on device | No — processed server-side, not linked to your identity by Google |
 | Sentry | Crash/error reporting | Crash stack traces + device/OS context. **No** account ID, email, or request bodies (we do not identify you to Sentry) | No — not linked to identity |
 
 Calls to FatSecret and USDA originate from our backend, never directly from

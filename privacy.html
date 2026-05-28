@@ -30,7 +30,7 @@
 
 <div class="meta">
   <p><strong>Effective date:</strong> May 24, 2026</p>
-  <p><strong>Last updated:</strong> May 24, 2026</p>
+  <p><strong>Last updated:</strong> May 28, 2026</p>
   <p><strong>Data controller:</strong> Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary</p>
   <p><strong>Contact:</strong> <a href="mailto:support@in-tolerance.app">support@in-tolerance.app</a></p>
 </div>
@@ -61,7 +61,7 @@ data, and we do <strong>not</strong> use it for advertising or cross-app trackin
     <tr><td>Identifiers</td><td>Account identifier (UUID)</td><td>Linking your records to your account</td></tr>
     <tr><td>Health &amp; Fitness</td><td>Food intolerances you declare; food log entries (meal type, time, notes); symptom check-ins (severity, onset, duration, notes); sleep-quality logs; pattern alerts derived from the above</td><td>Core app functionality — logging and pattern analysis</td></tr>
     <tr><td>User content</td><td>Free-text notes on logs; community food submissions you choose to publish</td><td>Core app functionality; optional community feature</td></tr>
-    <tr><td>Purchases</td><td>Subscription status (if/when paid plans launch)</td><td>To unlock paid features</td></tr>
+    <tr><td>Purchases</td><td>Subscription status</td><td>To unlock paid features</td></tr>
     <tr><td>Diagnostics</td><td>Crash reports and basic device/OS diagnostic context</td><td>Stability — diagnosing and fixing crashes. <strong>Not linked to your identity</strong> (no account ID or email is attached)</td></tr>
   </tbody>
 </table>
@@ -109,8 +109,9 @@ at any time by deleting the relevant entries or your account (Section 7).</p>
     <tr><td>Railway</td><td>Backend application hosting</td><td>All API traffic in transit; logs may contain user IDs</td><td>Yes — sub-processor under terms</td></tr>
     <tr><td>FatSecret</td><td>Food &amp; barcode lookup</td><td>Search terms / barcode strings only — sent from our backend. <strong>No</strong> email, user ID, or device data</td><td>No</td></tr>
     <tr><td>USDA FoodData Central</td><td>Food data fallback</td><td>Search terms only — sent from our backend (public-domain API)</td><td>No</td></tr>
-    <tr><td>Apple (StoreKit)</td><td>Subscription payments (if launched)</td><td>Purchase/subscription state</td><td>Yes — Apple-managed</td></tr>
-    <tr><td>RevenueCat (if/when paid plans launch)</td><td>Subscription/entitlement management</td><td>Apple App-User identifier, subscription state</td><td>Yes — sub-processor</td></tr>
+    <tr><td>Apple (StoreKit)</td><td>Subscription payments</td><td>Purchase/subscription state</td><td>Yes — Apple-managed</td></tr>
+    <tr><td>RevenueCat</td><td>Subscription and entitlement management</td><td>Apple App-User identifier, subscription state</td><td>Yes — sub-processor</td></tr>
+    <tr><td>Google LLC (Gemini API)</td><td>AI-powered weekly insights, food matching, and dietitian tips (Pro users only)</td><td>Food logs, symptom check-ins, sleep scores — sent server-side only; no Gemini SDK on device</td><td>No — processed server-side, not linked to your identity by Google</td></tr>
     <tr><td>Sentry</td><td>Crash/error reporting</td><td>Crash stack traces + device/OS context. <strong>No</strong> account ID, email, or request bodies (we do not identify you to Sentry)</td><td>No — not linked to identity</td></tr>
   </tbody>
 </table>
