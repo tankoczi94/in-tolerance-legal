@@ -1,7 +1,7 @@
 # Terms of Service & End User License Agreement — in-tolerance
 
 **Effective date:** May 24, 2026
-**Provider:** Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
+**Provider:** Tamas Tankoczi, Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
 ---
@@ -169,7 +169,7 @@ acceptance. The Effective date above reflects the current version.
 ## 15. Contact
 
 **support@in-tolerance.app**
-Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
+Tamas Tankoczi, Budapest, Hungary
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Effective date:** May 24, 2026
 **Last updated:** May 28, 2026
-**Data controller:** Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
+**Data controller:** Tamas Tankoczi, Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
 ---
@@ -174,5 +174,5 @@ reflects the current version.
 ## 11. Contact
 
 Questions or privacy requests: **support@in-tolerance.app**
-Tamas Tankoczi, Harmat Street 12, Building 3, 1102 Budapest, Hungary
+Tamas Tankoczi, Budapest, Hungary
 
