@@ -1,6 +1,6 @@
 # Terms of Service & End User License Agreement — in-tolerance
 
-**Effective date:** May 24, 2026
+**Effective date:** June 6, 2026
 **Provider:** Tamas Tankoczi, Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
@@ -44,10 +44,13 @@ Settings → Delete account; deletion is permanent and irreversible.
 
 We grant you a personal, limited, non-exclusive, non-transferable,
 revocable licence to use in-tolerance for your personal, non-commercial
-use, subject to these Terms and to Apple's standard
-[Licensed Application End User License Agreement](https://www.apple.com/legal/internet-services/itunes/dev/stdeula/),
-which is incorporated by reference. Where these Terms and Apple's standard
-EULA conflict, the stricter user-protective term applies. You may not
+use, subject to these Terms. Where you obtained the app from the Apple App
+Store, Apple's standard
+[Licensed Application End User License Agreement](https://www.apple.com/legal/internet-services/itunes/dev/stdeula/)
+is incorporated by reference; where you obtained it from Google Play, the
+[Google Play Terms of Service](https://play.google.com/about/play-terms/)
+apply. Where these Terms and an app-store EULA conflict, the stricter
+user-protective term applies. You may not
 copy, modify, reverse-engineer, resell, or build a competing service from
 the app except where such restriction is prohibited by law.
 
@@ -99,31 +102,33 @@ or upload malicious code.
 
 If paid subscriptions are offered:
 
-- Subscriptions are sold through Apple. Payment is charged to your Apple
-  Account at confirmation of purchase.
+- Subscriptions are sold through the app store you downloaded the app from
+  — the Apple App Store (iOS) or Google Play (Android). Payment is charged
+  to your Apple Account or Google Play account at confirmation of purchase.
 - **A subscription automatically renews** unless auto-renew is turned off
-  at least 24 hours before the end of the current period. Your Apple
-  Account is charged for renewal within 24 hours before the period ends.
-- **Manage or cancel** at any time in iOS Settings →
-  [your name] → Subscriptions. Cancellation takes effect at the end of the
-  current paid period.
+  at least 24 hours before the end of the current period. Your account is
+  charged for renewal within 24 hours before the period ends.
+- **Manage or cancel** at any time in iOS Settings → [your name] →
+  Subscriptions, or on Android in Google Play → Subscriptions. Cancellation
+  takes effect at the end of the current paid period.
 - Any unused portion of a free trial, if offered, is forfeited when you
   purchase a subscription.
-- **Refunds** are handled by Apple under
-  [Apple's policies](https://support.apple.com/billing); we cannot directly
-  issue App Store refunds.
+- **Refunds** are handled by Apple or Google under their respective
+  policies ([Apple](https://support.apple.com/billing) ·
+  [Google Play](https://support.google.com/googleplay/answer/2479637)); we
+  cannot directly issue app-store refunds.
 - Prices and features may change with notice; changes do not affect the
   period already paid for.
 
-There is no way to purchase through any channel other than Apple, and the
-app contains no external-purchase links.
+There is no way to purchase through any channel other than the app store
+(Apple or Google Play), and the app contains no external-purchase links.
 
 ## 9. Intellectual property
 
 The app, its name, design, and code (excluding your User Content and
 third-party food data) are owned by Tamas Tankoczi and protected by law.
-Food data is provided by FatSecret and USDA FoodData Central under their
-respective terms.
+Food data is provided by FatSecret, Open Food Facts, and USDA FoodData
+Central under their respective terms.
 
 ## 10. Termination
 

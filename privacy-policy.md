@@ -1,7 +1,7 @@
 # Privacy Policy — in-tolerance
 
 **Effective date:** May 24, 2026
-**Last updated:** May 28, 2026
+**Last updated:** June 6, 2026
 **Data controller:** Tamas Tankoczi, Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
@@ -29,6 +29,7 @@ data, and we do **not** use it for advertising or cross-app tracking.
 | Identifiers | Account identifier (UUID) | Linking your records to your account |
 | Health & Fitness | Food intolerances you declare; food log entries (meal type, time, notes); symptom check-ins (severity, onset, duration, notes); sleep-quality logs; pattern alerts derived from the above | Core app functionality — logging and pattern analysis |
 | User content | Free-text notes on logs; community food submissions you choose to publish | Core app functionality; optional community feature |
+| Photos (optional) | A food photo you choose to submit to the AI food-logging feature (Pro) | Sent to our AI provider (Google Gemini) to identify the food and estimate its contents. Processed in transit only — we do **not** store it on our servers |
 | Purchases | Subscription status | To unlock paid features |
 | Diagnostics | Crash reports and basic device/OS diagnostic context | Stability — diagnosing and fixing crashes. **Not linked to your identity** (no account ID or email is attached) |
 
@@ -41,9 +42,11 @@ at any time by deleting the relevant entries or your account (Section 7).
 ### Data we do NOT collect
 
 - Precise or coarse location.
-- Photos, video, or audio. The camera is used **only** to read a barcode
-  on the barcode-scanning screen; no image is captured, transmitted, or
-  stored.
+- Video or audio recordings. Barcode scanning uses the camera **only** to
+  read a barcode — no image is captured or stored. Separately, the optional
+  AI food-logging feature (Pro) lets you submit a single food photo; it is
+  sent to our AI provider to identify the food (Section 4) and is **not**
+  stored on our servers afterward.
 - Contacts, calendars, or device address book.
 - Browsing or search history. Food-search terms are passed to our
   food-data providers (Section 4) to return results and are **not** stored
@@ -52,8 +55,8 @@ at any time by deleting the relevant entries or your account (Section 7).
   contains no ad SDK and presents no App Tracking Transparency prompt
   because no cross-app tracking occurs.
 - Payment card or bank details. If you purchase a subscription, the
-  transaction is handled entirely by Apple; payment details never reach
-  our servers.
+  transaction is handled entirely by the app store you bought it through
+  (Apple App Store or Google Play); payment details never reach our servers.
 
 ## 3. How we use your data
 
@@ -78,13 +81,15 @@ function and is bound by a data-processing agreement or equivalent terms.
 | Supabase | Authentication + database hosting | All account, health, and user-content data (they host it) | Yes — sub-processor under DPA |
 | Railway | Backend application hosting | All API traffic in transit; logs may contain user IDs | Yes — sub-processor under terms |
 | FatSecret | Food & barcode lookup | Search terms / barcode strings only — sent from our backend. **No** email, user ID, or device data | No |
+| Open Food Facts | Food & barcode lookup | Search terms / barcode strings only — sent from our backend. **No** email, user ID, or device data | No |
 | USDA FoodData Central | Food data fallback | Search terms only — sent from our backend (public-domain API) | No |
-| Apple (StoreKit) | Subscription payments | Purchase/subscription state | Yes — Apple-managed |
-| RevenueCat | Subscription and entitlement management | Apple App-User identifier, subscription state | Yes — sub-processor |
-| Google LLC (Gemini API) | AI-powered weekly insights, food matching, and dietitian tips (Pro users only) | Food logs, symptom check-ins, sleep scores — sent server-side only; no Gemini SDK on device | No — processed server-side, not linked to your identity by Google |
+| Apple (StoreKit) | Subscription payments (iOS) | Purchase/subscription state | Yes — Apple-managed |
+| Google (Play Billing) | Subscription payments (Android) | Purchase/subscription state | Yes — Google-managed |
+| RevenueCat | Subscription and entitlement management | App-store user identifier, subscription state | Yes — sub-processor |
+| Google LLC (Gemini API) | AI-powered weekly insights, food matching, dietitian tips, and AI food logging (Pro users only) | Food logs, symptom check-ins, sleep scores, and any food photo you submit to AI food logging — sent server-side only; no Gemini SDK on device. Photos are processed transiently and not stored by us | No — processed server-side, not linked to your identity by Google |
 | Sentry | Crash/error reporting | Crash stack traces + device/OS context. **No** account ID, email, or request bodies (we do not identify you to Sentry) | No — not linked to identity |
 
-Calls to FatSecret and USDA originate from our backend, never directly from
+Calls to FatSecret, Open Food Facts, and USDA originate from our backend, never directly from
 your device, so those providers do not receive your identity or device
 information.
 
