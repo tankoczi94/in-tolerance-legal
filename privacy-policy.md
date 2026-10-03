@@ -1,7 +1,7 @@
 # Privacy Policy — in-tolerance
 
 **Effective date:** May 24, 2026
-**Last updated:** June 6, 2026
+**Last updated:** October 3, 2026
 **Data controller:** Tamas Tankoczi, Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
@@ -27,7 +27,7 @@ data, and we do **not** use it for advertising or cross-app tracking.
 |---|---|---|
 | Contact info | Email address | Authentication, account management, support |
 | Identifiers | Account identifier (UUID) | Linking your records to your account |
-| Health & Fitness | Food intolerances you declare; food log entries (meal type, time, notes); symptom check-ins (severity, onset, duration, notes); sleep-quality logs; pattern alerts derived from the above | Core app functionality — logging and pattern analysis |
+| Health & Fitness | Food intolerances you declare; food log entries (meal type, time, notes); symptom check-ins (severity, onset, duration, notes); sleep-quality logs; sleep start time, wake time, and an estimated sleep quality imported from Apple Health (only if you connect it — see below); pattern alerts derived from the above | Core app functionality — logging and pattern analysis |
 | User content | Free-text notes on logs; community food submissions you choose to publish | Core app functionality; optional community feature |
 | Photos (optional) | A food photo you choose to submit to the AI food-logging feature (Pro) | Sent to our AI provider (Google Gemini) to identify the food and estimate its contents. Processed in transit only — we do **not** store it on our servers |
 | Purchases | Subscription status | To unlock paid features |
@@ -38,6 +38,19 @@ reveal information about your health. We process it only to provide the app
 to you, on the legal basis of your consent and performance of our service
 to you (GDPR Art. 6(1)(a)/(b) and Art. 9(2)(a)). You can withdraw consent
 at any time by deleting the relevant entries or your account (Section 7).
+
+**Apple Health (optional).** If you choose to connect Apple Health, the app
+asks for **read-only** access to your sleep analysis data. We read the last
+14 days of sleep sessions and, for each night, store only the date, sleep
+start time, wake time, and a sleep-quality estimate we calculate from sleep
+duration and stages. Raw Health samples are not stored. We never write to
+Apple Health. This data is used only to show you your sleep and to find
+patterns in your own logs. It is **not** used for advertising, marketing, or
+data mining, and is **not** sold or shared with data brokers. Like your other
+sleep logs, the derived sleep entries may be included in the server-side
+requests described in Section 4 (AI features). You can disconnect at any
+time in the app or in iOS Settings → Health → Data Access & Devices, and
+delete imported entries like any other sleep log.
 
 ### Data we do NOT collect
 

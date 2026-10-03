@@ -30,7 +30,7 @@
 
 <div class="meta">
   <p><strong>Effective date:</strong> May 24, 2026</p>
-  <p><strong>Last updated:</strong> June 6, 2026</p>
+  <p><strong>Last updated:</strong> October 3, 2026</p>
   <p><strong>Data controller:</strong> Tamas Tankoczi, Budapest, Hungary</p>
   <p><strong>Contact:</strong> <a href="mailto:support@in-tolerance.app">support@in-tolerance.app</a></p>
 </div>
@@ -59,7 +59,7 @@ data, and we do <strong>not</strong> use it for advertising or cross-app trackin
   <tbody>
     <tr><td>Contact info</td><td>Email address</td><td>Authentication, account management, support</td></tr>
     <tr><td>Identifiers</td><td>Account identifier (UUID)</td><td>Linking your records to your account</td></tr>
-    <tr><td>Health &amp; Fitness</td><td>Food intolerances you declare; food log entries (meal type, time, notes); symptom check-ins (severity, onset, duration, notes); sleep-quality logs; pattern alerts derived from the above</td><td>Core app functionality — logging and pattern analysis</td></tr>
+    <tr><td>Health &amp; Fitness</td><td>Food intolerances you declare; food log entries (meal type, time, notes); symptom check-ins (severity, onset, duration, notes); sleep-quality logs; sleep start time, wake time, and an estimated sleep quality imported from Apple Health (only if you connect it — see below); pattern alerts derived from the above</td><td>Core app functionality — logging and pattern analysis</td></tr>
     <tr><td>User content</td><td>Free-text notes on logs; community food submissions you choose to publish</td><td>Core app functionality; optional community feature</td></tr>
     <tr><td>Photos (optional)</td><td>A food photo you choose to submit to the AI food-logging feature (Pro)</td><td>Sent to our AI provider (Google Gemini) to identify the food and estimate its contents. Processed in transit only — we do <strong>not</strong> store it on our servers</td></tr>
     <tr><td>Purchases</td><td>Subscription status</td><td>To unlock paid features</td></tr>
@@ -72,6 +72,19 @@ reveal information about your health. We process it only to provide the app
 to you, on the legal basis of your consent and performance of our service
 to you (GDPR Art. 6(1)(a)/(b) and Art. 9(2)(a)). You can withdraw consent
 at any time by deleting the relevant entries or your account (Section 7).</p>
+
+<p><strong>Apple Health (optional).</strong> If you choose to connect Apple Health, the app
+asks for <strong>read-only</strong> access to your sleep analysis data. We read the last
+14 days of sleep sessions and, for each night, store only the date, sleep
+start time, wake time, and a sleep-quality estimate we calculate from sleep
+duration and stages. Raw Health samples are not stored. We never write to
+Apple Health. This data is used only to show you your sleep and to find
+patterns in your own logs. It is <strong>not</strong> used for advertising, marketing, or
+data mining, and is <strong>not</strong> sold or shared with data brokers. Like your other
+sleep logs, the derived sleep entries may be included in the server-side
+requests described in Section 4 (AI features). You can disconnect at any
+time in the app or in iOS Settings → Health → Data Access &amp; Devices, and
+delete imported entries like any other sleep log.</p>
 
 <h3>Data we do NOT collect</h3>
 
