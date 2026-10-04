@@ -1,0 +1,11 @@
+{
+  "name": "in-tolerance-legal",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.3"
+  }
+}

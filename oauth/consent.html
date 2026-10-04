@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Connect an assistant — in-tolerance</title>
+  <link rel="stylesheet" href="/oauth/consent.css" />
+</head>
+<body>
+  <main>
+    <h1>in-tolerance</h1>
+
+    <p id="status" role="status" aria-live="polite">Loading…</p>
+    <p id="error" role="alert" hidden></p>
+
+    <!-- Sign in / sign up -->
+    <section id="auth-view" hidden>
+      <h2 tabindex="-1">Sign in to continue</h2>
+      <form id="auth-form" novalidate>
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" required />
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" minlength="8" required />
+
+        <div id="signup-only" hidden>
+          <label class="check">
+            <input id="tos" type="checkbox" />
+            <span>I accept the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>
+              and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+          </label>
+          <label class="check">
+            <input id="signup-age" type="checkbox" />
+            <span>I am 18 years or older.</span>
+          </label>
+        </div>
+
+        <button id="auth-submit" type="submit">Sign in</button>
+        <button id="auth-toggle" type="button" class="link">Create an account instead</button>
+      </form>
+    </section>
+
+    <!-- Consent -->
+    <section id="consent-view" hidden>
+      <h2 tabindex="-1"><span id="client-name"></span> wants to connect</h2>
+      <p class="muted">Returns you to: <strong id="redirect-host"></strong></p>
+
+      <h3>It will be able to</h3>
+      <ul>
+        <li>read your food diary, symptoms, sleep notes and patterns</li>
+        <li>add foods and log meals and symptoms for you</li>
+        <li>free plan: only the last 7 days of data</li>
+      </ul>
+
+      <form id="consent-form">
+        <label class="check">
+          <input id="health-consent" type="checkbox" />
+          <span id="health-label"></span>
+        </label>
+        <label class="check">
+          <input id="age-confirmed" type="checkbox" />
+          <span id="age-label"></span>
+        </label>
+        <label class="check">
+          <input id="marketing" type="checkbox" />
+          <span id="marketing-label"></span>
+        </label>
+
+        <div class="actions">
+          <button id="deny" type="button" class="secondary">Deny</button>
+          <button id="allow" type="submit" aria-describedby="allow-hint" disabled>Allow</button>
+        </div>
+        <p id="allow-hint" class="muted">Tick the health-data consent and the 18+ confirmation to enable Allow.</p>
+      </form>
+    </section>
+  </main>
+
+  <script src="/oauth/vendor/supabase.js"></script>
+  <script type="module" src="/oauth/consent.js"></script>
+</body>
+</html>
