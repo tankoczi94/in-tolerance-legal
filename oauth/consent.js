@@ -2,9 +2,10 @@ import {
   buildConsentPayload,
   buildOAuthRedirectTo,
   canAllow,
+  evaluateOAuthCallback,
+  generateNonce,
   isAllowedRedirect,
   parseAuthorizationId,
-  parseOAuthCallback,
   stripAuthParams,
 } from './consent-logic.js';
 import {
@@ -33,6 +34,8 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
     detectSessionInUrl: false,
   },
 });
+
+const NONCE_KEY = 'oauth_nonce';
 
 const authorizationId = parseAuthorizationId(location.search);
 let clientId = null;
@@ -143,11 +146,13 @@ async function submitAuth() {
 async function onGoogleSignIn() {
   clearError();
   $('google-signin').disabled = true;
+  sessionStorage.setItem(NONCE_KEY, generateNonce());
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: buildOAuthRedirectTo(location.href) },
   });
   if (error) {
+    sessionStorage.removeItem(NONCE_KEY);
     $('google-signin').disabled = false;
     showError('Google sign-in failed. Please try again or use email.');
   }
@@ -156,16 +161,20 @@ async function onGoogleSignIn() {
 // Returning from Google: tokens (or an error) arrive in the URL hash. Returns
 // true if a callback was handled and a session is ready.
 async function handleOAuthCallback() {
-  const callback = parseOAuthCallback(location.hash);
-  const hasAuthParams =
-    callback !== null || /[?&](code|error)=/.test(location.search);
-  if (!hasAuthParams) return false;
-  history.replaceState(null, '', stripAuthParams(location.href));
-  if (!callback) return false;
-  if (callback.error) {
+  const nonce = sessionStorage.getItem(NONCE_KEY);
+  sessionStorage.removeItem(NONCE_KEY);
+  const { strip, result } = evaluateOAuthCallback({
+    hash: location.hash,
+    search: location.search,
+    nonce,
+  });
+  if (strip) history.replaceState(null, '', stripAuthParams(location.href));
+  if (!result) return false;
+  if (result.error) {
     showError('Google sign-in failed. Please try again or use email.');
     return false;
   }
+  const callback = result;
   const { error } = await supabase.auth.setSession({
     access_token: callback.accessToken,
     refresh_token: callback.refreshToken,
@@ -270,6 +279,10 @@ async function init() {
   $('auth-form').addEventListener('submit', onAuthSubmit);
   $('auth-toggle').addEventListener('click', toggleAuthMode);
   $('google-signin').addEventListener('click', onGoogleSignIn);
+  // Back/forward cache restores the disabled button; re-enable it.
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) $('google-signin').disabled = false;
+  });
   $('consent-form').addEventListener('submit', onAllow);
   $('deny').addEventListener('click', onDeny);
   $('health-consent').addEventListener('change', updateAllowState);

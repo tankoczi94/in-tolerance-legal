@@ -8,6 +8,8 @@ import {
   parseOAuthCallback,
   stripAuthParams,
   parseAuthorizationId,
+  generateNonce,
+  evaluateOAuthCallback,
 } from './consent-logic.js';
 
 describe('parseAuthorizationId', () => {
@@ -190,4 +192,83 @@ describe('stripAuthParams', () => {
       stripAuthParams('https://in-tolerance.app/oauth/consent?authorization_id=abc'),
     ).toBe('/oauth/consent?authorization_id=abc');
   });
+});
+
+describe('parseOAuthCallback edge cases', () => {
+  it('decodes URL-encoded tokens', () => {
+    expect(
+      parseOAuthCallback('#access_token=a%2Bb%3D&refresh_token=r%2F1'),
+    ).toEqual({ accessToken: 'a+b=', refreshToken: 'r/1' });
+  });
+
+  it('error wins over tokens', () => {
+    expect(
+      parseOAuthCallback('#error=access_denied&access_token=a&refresh_token=r'),
+    ).toEqual({ error: 'access_denied' });
+  });
+});
+
+describe('buildOAuthRedirectTo without authorization_id', () => {
+  it('returns the bare consent URL', () => {
+    expect(
+      buildOAuthRedirectTo('https://in-tolerance.app/oauth/consent?x=1#h'),
+    ).toBe('https://in-tolerance.app/oauth/consent');
+  });
+});
+
+describe('generateNonce', () => {
+  const fakeCrypto = {
+    getRandomValues(arr) {
+      arr.forEach((_, i) => (arr[i] = i));
+      return arr;
+    },
+  };
+
+  it('returns 32 hex chars from the crypto source', () => {
+    expect(generateNonce(fakeCrypto)).toBe('000102030405060708090a0b0c0d0e0f');
+  });
+
+  it('differs between calls with real crypto', () => {
+    expect(generateNonce(globalThis.crypto)).not.toBe(
+      generateNonce(globalThis.crypto),
+    );
+  });
+});
+
+describe('evaluateOAuthCallback', () => {
+  const tokens = '#access_token=a&refresh_token=r';
+
+  it('does nothing for a clean URL', () => {
+    expect(evaluateOAuthCallback({ hash: '', search: '?authorization_id=x', nonce: null }))
+      .toEqual({ strip: false, result: null });
+  });
+
+  it('accepts tokens when a nonce is stored', () => {
+    expect(evaluateOAuthCallback({ hash: tokens, search: '', nonce: 'n' }))
+      .toEqual({ strip: true, result: { accessToken: 'a', refreshToken: 'r' } });
+  });
+
+  it.each([null, ''])('rejects tokens when nonce is %j', (nonce) => {
+    expect(evaluateOAuthCallback({ hash: tokens, search: '', nonce }))
+      .toEqual({ strip: true, result: { error: true } });
+  });
+
+  it('shows the error for a query-only error', () => {
+    expect(evaluateOAuthCallback({ hash: '', search: '?error=access_denied', nonce: null }))
+      .toEqual({ strip: true, result: { error: true } });
+  });
+
+  it('error beats tokens', () => {
+    expect(evaluateOAuthCallback({ hash: `${tokens}&error=x`, search: '', nonce: 'n' }))
+      .toEqual({ strip: true, result: { error: true } });
+  });
+
+  it.each(['#access_token=a', '#refresh_token=r', '#provider_token=p'])(
+    'strips partial token hash %s even though it does not parse',
+    (hash) => {
+      const out = evaluateOAuthCallback({ hash, search: '', nonce: 'n' });
+      expect(out.strip).toBe(true);
+      expect(out.result).toEqual({ error: true });
+    },
+  );
 });

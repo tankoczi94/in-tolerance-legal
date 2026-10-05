@@ -100,3 +100,39 @@ export function stripAuthParams(href) {
   for (const key of AUTH_QUERY_PARAMS) url.searchParams.delete(key);
   return url.pathname + url.search;
 }
+
+// Random per-attempt value kept in sessionStorage across the Google round-trip.
+// A callback hash is only honoured if one is present (login-CSRF defence).
+export function generateNonce(cryptoSource = globalThis.crypto) {
+  const bytes = cryptoSource.getRandomValues(new Uint8Array(16));
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+const SENSITIVE_HASH_KEYS = [
+  'access_token',
+  'refresh_token',
+  'provider_token',
+  'error',
+];
+
+// Decide what to do with the current URL after an OAuth return trip.
+// strip: remove hash/query auth params from the address bar.
+// result: null (not a callback), {error: true}, or {accessToken, refreshToken}.
+export function evaluateOAuthCallback({ hash, search, nonce }) {
+  const hashParams = new URLSearchParams(hash.replace(/^#/, ''));
+  const hasSensitiveHash = SENSITIVE_HASH_KEYS.some((k) => hashParams.has(k));
+  const hasQueryAuth = ['code', 'error'].some((k) =>
+    new URLSearchParams(search).has(k),
+  );
+  if (!hasSensitiveHash && !hasQueryAuth) return { strip: false, result: null };
+
+  if (new URLSearchParams(search).has('error')) {
+    return { strip: true, result: { error: true } };
+  }
+  const callback = parseOAuthCallback(hash);
+  if (callback && !callback.error && nonce) {
+    return { strip: true, result: callback };
+  }
+  return { strip: true, result: hasSensitiveHash ? { error: true } : null };
+}
+
