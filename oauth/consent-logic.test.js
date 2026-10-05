@@ -3,7 +3,10 @@ import {
   buildConsentPayload,
   canAllow,
   hashConsentText,
+  buildOAuthRedirectTo,
   isAllowedRedirect,
+  parseOAuthCallback,
+  stripAuthParams,
   parseAuthorizationId,
 } from './consent-logic.js';
 
@@ -133,5 +136,58 @@ describe('buildConsentPayload', () => {
       text: 't',
     });
     expect(payload.marketing_opt_in).toBe(false);
+  });
+});
+
+describe('parseOAuthCallback', () => {
+  it('reads tokens from the implicit-flow hash', () => {
+    expect(
+      parseOAuthCallback('#access_token=a.b.c&refresh_token=r1&token_type=bearer'),
+    ).toEqual({ accessToken: 'a.b.c', refreshToken: 'r1' });
+  });
+
+  it('reports provider errors from the hash', () => {
+    expect(
+      parseOAuthCallback('#error=access_denied&error_description=User+cancelled'),
+    ).toEqual({ error: 'User cancelled' });
+  });
+
+  it('falls back to the error code when no description', () => {
+    expect(parseOAuthCallback('#error=server_error')).toEqual({
+      error: 'server_error',
+    });
+  });
+
+  it.each(['', '#', '#foo=bar', '#access_token=only', '#refresh_token=only'])(
+    'returns null for %s',
+    (hash) => {
+      expect(parseOAuthCallback(hash)).toBeNull();
+    },
+  );
+});
+
+describe('buildOAuthRedirectTo', () => {
+  it('keeps only the path and authorization_id', () => {
+    expect(
+      buildOAuthRedirectTo(
+        'https://in-tolerance.app/oauth/consent?authorization_id=abc&error=x#access_token=t',
+      ),
+    ).toBe('https://in-tolerance.app/oauth/consent?authorization_id=abc');
+  });
+});
+
+describe('stripAuthParams', () => {
+  it('removes hash and auth query params but keeps authorization_id', () => {
+    expect(
+      stripAuthParams(
+        'https://in-tolerance.app/oauth/consent?authorization_id=abc&code=1&error=e&error_code=c&error_description=d#access_token=t',
+      ),
+    ).toBe('/oauth/consent?authorization_id=abc');
+  });
+
+  it('is a no-op for a clean url', () => {
+    expect(
+      stripAuthParams('https://in-tolerance.app/oauth/consent?authorization_id=abc'),
+    ).toBe('/oauth/consent?authorization_id=abc');
   });
 });

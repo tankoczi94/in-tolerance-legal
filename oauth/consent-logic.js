@@ -69,3 +69,34 @@ export async function buildConsentPayload({
     marketing_opt_in: marketingOptIn === true,
   };
 }
+
+const AUTH_QUERY_PARAMS = ['code', 'error', 'error_code', 'error_description'];
+
+// Return trip from the OAuth provider (implicit flow: tokens in the hash).
+// Returns {accessToken, refreshToken}, {error}, or null if not a callback.
+export function parseOAuthCallback(hash) {
+  const params = new URLSearchParams(hash.replace(/^#/, ''));
+  const error = params.get('error_description') ?? params.get('error');
+  if (error) return { error };
+  const accessToken = params.get('access_token');
+  const refreshToken = params.get('refresh_token');
+  return accessToken && refreshToken ? { accessToken, refreshToken } : null;
+}
+
+// Where the provider sends the user back: same consent URL, same
+// authorization_id, nothing else.
+export function buildOAuthRedirectTo(href) {
+  const url = new URL(href);
+  const id = url.searchParams.get('authorization_id');
+  url.search = '';
+  url.hash = '';
+  if (id !== null) url.searchParams.set('authorization_id', id);
+  return url.toString();
+}
+
+// Path + query safe for history.replaceState, without auth params/tokens.
+export function stripAuthParams(href) {
+  const url = new URL(href);
+  for (const key of AUTH_QUERY_PARAMS) url.searchParams.delete(key);
+  return url.pathname + url.search;
+}

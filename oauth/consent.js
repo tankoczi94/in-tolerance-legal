@@ -1,8 +1,11 @@
 import {
   buildConsentPayload,
+  buildOAuthRedirectTo,
   canAllow,
   isAllowedRedirect,
   parseAuthorizationId,
+  parseOAuthCallback,
+  stripAuthParams,
 } from './consent-logic.js';
 import {
   AGE_LABEL,
@@ -20,7 +23,9 @@ const API_URL = 'https://in-tolerance-production.up.railway.app';
 const allowLocalhost = location.hostname === 'localhost';
 const $ = (id) => document.getElementById(id);
 
-// In-memory session only: sign-in is always fresh for this flow.
+// In-memory session only: sign-in is always fresh for this flow. Implicit flow
+// (default) so the Google round-trip needs no stored PKCE verifier; the
+// callback hash is handled explicitly in handleOAuthCallback().
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
     persistSession: false,
@@ -135,6 +140,43 @@ async function submitAuth() {
   await loadAuthorization();
 }
 
+async function onGoogleSignIn() {
+  clearError();
+  $('google-signin').disabled = true;
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: buildOAuthRedirectTo(location.href) },
+  });
+  if (error) {
+    $('google-signin').disabled = false;
+    showError('Google sign-in failed. Please try again or use email.');
+  }
+}
+
+// Returning from Google: tokens (or an error) arrive in the URL hash. Returns
+// true if a callback was handled and a session is ready.
+async function handleOAuthCallback() {
+  const callback = parseOAuthCallback(location.hash);
+  const hasAuthParams =
+    callback !== null || /[?&](code|error)=/.test(location.search);
+  if (!hasAuthParams) return false;
+  history.replaceState(null, '', stripAuthParams(location.href));
+  if (!callback) return false;
+  if (callback.error) {
+    showError('Google sign-in failed. Please try again or use email.');
+    return false;
+  }
+  const { error } = await supabase.auth.setSession({
+    access_token: callback.accessToken,
+    refresh_token: callback.refreshToken,
+  });
+  if (error) {
+    showError('Google sign-in failed. Please try again or use email.');
+    return false;
+  }
+  return true;
+}
+
 function toggleAuthMode() {
   signUpMode = !signUpMode;
   $('signup-only').hidden = !signUpMode;
@@ -216,7 +258,7 @@ async function onDeny() {
   }
 }
 
-function init() {
+async function init() {
   if (!authorizationId) {
     fatal('Missing or invalid authorization request. Please start again from the assistant.');
     return;
@@ -227,11 +269,16 @@ function init() {
 
   $('auth-form').addEventListener('submit', onAuthSubmit);
   $('auth-toggle').addEventListener('click', toggleAuthMode);
+  $('google-signin').addEventListener('click', onGoogleSignIn);
   $('consent-form').addEventListener('submit', onAllow);
   $('deny').addEventListener('click', onDeny);
   $('health-consent').addEventListener('change', updateAllowState);
   $('age-confirmed').addEventListener('change', updateAllowState);
 
+  if (await handleOAuthCallback()) {
+    await loadAuthorization();
+    return;
+  }
   show('auth-view');
 }
 
