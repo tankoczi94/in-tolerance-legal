@@ -5,11 +5,9 @@ import {
   hashConsentText,
   buildOAuthRedirectTo,
   isAllowedRedirect,
-  parseOAuthCallback,
   stripAuthParams,
   parseAuthorizationId,
-  generateNonce,
-  evaluateOAuthCallback,
+  evaluatePkceCallback,
 } from './consent-logic.js';
 
 describe('parseAuthorizationId', () => {
@@ -141,33 +139,6 @@ describe('buildConsentPayload', () => {
   });
 });
 
-describe('parseOAuthCallback', () => {
-  it('reads tokens from the implicit-flow hash', () => {
-    expect(
-      parseOAuthCallback('#access_token=a.b.c&refresh_token=r1&token_type=bearer'),
-    ).toEqual({ accessToken: 'a.b.c', refreshToken: 'r1' });
-  });
-
-  it('reports provider errors from the hash', () => {
-    expect(
-      parseOAuthCallback('#error=access_denied&error_description=User+cancelled'),
-    ).toEqual({ error: 'User cancelled' });
-  });
-
-  it('falls back to the error code when no description', () => {
-    expect(parseOAuthCallback('#error=server_error')).toEqual({
-      error: 'server_error',
-    });
-  });
-
-  it.each(['', '#', '#foo=bar', '#access_token=only', '#refresh_token=only'])(
-    'returns null for %s',
-    (hash) => {
-      expect(parseOAuthCallback(hash)).toBeNull();
-    },
-  );
-});
-
 describe('buildOAuthRedirectTo', () => {
   it('keeps only the path and authorization_id', () => {
     expect(
@@ -194,20 +165,6 @@ describe('stripAuthParams', () => {
   });
 });
 
-describe('parseOAuthCallback edge cases', () => {
-  it('decodes URL-encoded tokens', () => {
-    expect(
-      parseOAuthCallback('#access_token=a%2Bb%3D&refresh_token=r%2F1'),
-    ).toEqual({ accessToken: 'a+b=', refreshToken: 'r/1' });
-  });
-
-  it('error wins over tokens', () => {
-    expect(
-      parseOAuthCallback('#error=access_denied&access_token=a&refresh_token=r'),
-    ).toEqual({ error: 'access_denied' });
-  });
-});
-
 describe('buildOAuthRedirectTo without authorization_id', () => {
   it('returns the bare consent URL', () => {
     expect(
@@ -216,59 +173,57 @@ describe('buildOAuthRedirectTo without authorization_id', () => {
   });
 });
 
-describe('generateNonce', () => {
-  const fakeCrypto = {
-    getRandomValues(arr) {
-      arr.forEach((_, i) => (arr[i] = i));
-      return arr;
-    },
-  };
+describe('evaluatePkceCallback', () => {
+  const run = (search, extra = {}) =>
+    evaluatePkceCallback({ search, hash: '', handled: false, ...extra });
 
-  it('returns 32 hex chars from the crypto source', () => {
-    expect(generateNonce(fakeCrypto)).toBe('000102030405060708090a0b0c0d0e0f');
+  it('does nothing for a clean url', () => {
+    expect(run('?authorization_id=x')).toEqual({ strip: false, action: 'none' });
   });
 
-  it('differs between calls with real crypto', () => {
-    expect(generateNonce(globalThis.crypto)).not.toBe(
-      generateNonce(globalThis.crypto),
-    );
-  });
-});
-
-describe('evaluateOAuthCallback', () => {
-  const tokens = '#access_token=a&refresh_token=r';
-
-  it('does nothing for a clean URL', () => {
-    expect(evaluateOAuthCallback({ hash: '', search: '?authorization_id=x', nonce: null }))
-      .toEqual({ strip: false, result: null });
+  it('exchanges the code and strips the url', () => {
+    expect(run('?authorization_id=x&code=abc')).toEqual({
+      strip: true,
+      action: 'exchange',
+      code: 'abc',
+    });
   });
 
-  it('accepts tokens when a nonce is stored', () => {
-    expect(evaluateOAuthCallback({ hash: tokens, search: '', nonce: 'n' }))
-      .toEqual({ strip: true, result: { accessToken: 'a', refreshToken: 'r' } });
+  it.each([
+    '?authorization_id=x&error=access_denied',
+    '?authorization_id=x&error_description=nope',
+    '?authorization_id=x&error_code=bad&code=abc',
+  ])('reports an error for %s and never exchanges', (search) => {
+    expect(run(search)).toEqual({ strip: true, action: 'error' });
   });
 
-  it.each([null, ''])('rejects tokens when nonce is %j', (nonce) => {
-    expect(evaluateOAuthCallback({ hash: tokens, search: '', nonce }))
-      .toEqual({ strip: true, result: { error: true } });
+  it('reports an error found in the hash', () => {
+    expect(run('?authorization_id=x', { hash: '#error=access_denied' })).toEqual({
+      strip: true,
+      action: 'error',
+    });
   });
 
-  it('shows the error for a query-only error', () => {
-    expect(evaluateOAuthCallback({ hash: '', search: '?error=access_denied', nonce: null }))
-      .toEqual({ strip: true, result: { error: true } });
+  it('strips but does not exchange without authorization_id', () => {
+    expect(run('?code=abc')).toEqual({ strip: true, action: 'error' });
   });
 
-  it('error beats tokens', () => {
-    expect(evaluateOAuthCallback({ hash: `${tokens}&error=x`, search: '', nonce: 'n' }))
-      .toEqual({ strip: true, result: { error: true } });
+  it('strips but does not exchange a second time', () => {
+    expect(run('?authorization_id=x&code=abc', { handled: true })).toEqual({
+      strip: true,
+      action: 'none',
+    });
   });
 
-  it.each(['#access_token=a', '#refresh_token=r', '#provider_token=p'])(
-    'strips partial token hash %s even though it does not parse',
-    (hash) => {
-      const out = evaluateOAuthCallback({ hash, search: '', nonce: 'n' });
-      expect(out.strip).toBe(true);
-      expect(out.result).toEqual({ error: true });
+  it('ignores implicit-flow tokens in the hash', () => {
+    expect(run('?authorization_id=x', { hash: '#access_token=a&refresh_token=r' }))
+      .toEqual({ strip: false, action: 'none' });
+  });
+
+  it.each(['?authorization_id=x&code=', `?authorization_id=x&code=${'a'.repeat(513)}`])(
+    'rejects malformed code %s',
+    (search) => {
+      expect(run(search)).toEqual({ strip: true, action: 'error' });
     },
   );
 });

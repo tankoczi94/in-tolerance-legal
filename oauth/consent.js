@@ -2,8 +2,7 @@ import {
   buildConsentPayload,
   buildOAuthRedirectTo,
   canAllow,
-  evaluateOAuthCallback,
-  generateNonce,
+  evaluatePkceCallback,
   isAllowedRedirect,
   parseAuthorizationId,
   stripAuthParams,
@@ -24,18 +23,36 @@ const API_URL = 'https://in-tolerance-production.up.railway.app';
 const allowLocalhost = location.hostname === 'localhost';
 const $ = (id) => document.getElementById(id);
 
-// In-memory session only: sign-in is always fresh for this flow. Implicit flow
-// (default) so the Google round-trip needs no stored PKCE verifier; the
-// callback hash is handled explicitly in handleOAuthCallback().
+// PKCE flow. sessionStorage (tab-scoped, never localStorage) holds the code
+// verifier across the redirect to Google and back, plus the short-lived
+// session. Both are wiped once the flow ends (see clearAuthStorage).
+// detectSessionInUrl is off: the ?code= callback is exchanged exactly once,
+// explicitly, in handleOAuthCallback().
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
-    persistSession: false,
+    flowType: 'pkce',
+    storage: window.sessionStorage,
+    persistSession: true,
     autoRefreshToken: false,
     detectSessionInUrl: false,
   },
 });
 
-const NONCE_KEY = 'oauth_nonce';
+const STORAGE_PREFIX = 'sb-';
+let callbackHandled = false;
+
+// Drop every supabase key (session + code verifier) from sessionStorage. This
+// is deliberately local-only: calling signOut() would revoke the user's session
+// server-side before the assistant exchanges its authorization code.
+async function clearSession() {
+  clearAuthStorage();
+}
+
+function clearAuthStorage() {
+  for (const key of Object.keys(sessionStorage)) {
+    if (key.startsWith(STORAGE_PREFIX)) sessionStorage.removeItem(key);
+  }
+}
 
 const authorizationId = parseAuthorizationId(location.search);
 let clientId = null;
@@ -57,6 +74,7 @@ function clearError() {
 }
 
 function fatal(message) {
+  clearSession();
   show(null);
   showError(message);
 }
@@ -68,7 +86,8 @@ function goToClient(redirectUrl) {
     fatal('This request was blocked: unexpected return address.');
     return;
   }
-  location.assign(redirectUrl);
+  // Consent flow is over: no token may outlive it in this tab.
+  clearSession().finally(() => location.assign(redirectUrl));
 }
 
 async function loadAuthorization() {
@@ -145,40 +164,39 @@ async function submitAuth() {
 
 async function onGoogleSignIn() {
   clearError();
+  // Without WebCrypto supabase-js silently downgrades PKCE to the plain method.
+  if (!globalThis.crypto?.subtle) {
+    showError('Google sign-in failed. Please try again or use email.');
+    return;
+  }
   $('google-signin').disabled = true;
-  sessionStorage.setItem(NONCE_KEY, generateNonce());
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: buildOAuthRedirectTo(location.href) },
   });
   if (error) {
-    sessionStorage.removeItem(NONCE_KEY);
     $('google-signin').disabled = false;
     showError('Google sign-in failed. Please try again or use email.');
   }
 }
 
-// Returning from Google: tokens (or an error) arrive in the URL hash. Returns
-// true if a callback was handled and a session is ready.
+// Returning from Google: a one-time ?code= (or an error) arrives in the query.
+// Returns true if the code was exchanged and a session is ready.
 async function handleOAuthCallback() {
-  const nonce = sessionStorage.getItem(NONCE_KEY);
-  sessionStorage.removeItem(NONCE_KEY);
-  const { strip, result } = evaluateOAuthCallback({
-    hash: location.hash,
+  const { strip, action, code } = evaluatePkceCallback({
     search: location.search,
-    nonce,
+    hash: location.hash,
+    handled: callbackHandled,
   });
+  // Strip before awaiting so the code never lingers in the address bar/history.
   if (strip) history.replaceState(null, '', stripAuthParams(location.href));
-  if (!result) return false;
-  if (result.error) {
+  if (action === 'none') return false;
+  if (action === 'error') {
     showError('Google sign-in failed. Please try again or use email.');
     return false;
   }
-  const callback = result;
-  const { error } = await supabase.auth.setSession({
-    access_token: callback.accessToken,
-    refresh_token: callback.refreshToken,
-  });
+  callbackHandled = true;
+  const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
     showError('Google sign-in failed. Please try again or use email.');
     return false;
@@ -292,6 +310,8 @@ async function init() {
     await loadAuthorization();
     return;
   }
+  // Not a callback: drop any stale session/verifier from an abandoned attempt.
+  clearAuthStorage();
   show('auth-view');
 }
 

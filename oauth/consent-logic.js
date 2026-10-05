@@ -72,17 +72,6 @@ export async function buildConsentPayload({
 
 const AUTH_QUERY_PARAMS = ['code', 'error', 'error_code', 'error_description'];
 
-// Return trip from the OAuth provider (implicit flow: tokens in the hash).
-// Returns {accessToken, refreshToken}, {error}, or null if not a callback.
-export function parseOAuthCallback(hash) {
-  const params = new URLSearchParams(hash.replace(/^#/, ''));
-  const error = params.get('error_description') ?? params.get('error');
-  if (error) return { error };
-  const accessToken = params.get('access_token');
-  const refreshToken = params.get('refresh_token');
-  return accessToken && refreshToken ? { accessToken, refreshToken } : null;
-}
-
 // Where the provider sends the user back: same consent URL, same
 // authorization_id, nothing else.
 export function buildOAuthRedirectTo(href) {
@@ -101,38 +90,24 @@ export function stripAuthParams(href) {
   return url.pathname + url.search;
 }
 
-// Random per-attempt value kept in sessionStorage across the Google round-trip.
-// A callback hash is only honoured if one is present (login-CSRF defence).
-export function generateNonce(cryptoSource = globalThis.crypto) {
-  const bytes = cryptoSource.getRandomValues(new Uint8Array(16));
-  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
-}
+const PKCE_CODE = /^[!-~]{1,512}$/;
+const ERROR_PARAMS = ['error', 'error_code', 'error_description'];
 
-const SENSITIVE_HASH_KEYS = [
-  'access_token',
-  'refresh_token',
-  'provider_token',
-  'error',
-];
+// Decide what to do with the URL after the PKCE return trip from the provider.
+// strip: remove auth params from the address bar (do this before any await).
+// action: 'none' | 'error' | 'exchange' (with `code`). `handled` guards a
+// second run so the one-time code is never exchanged twice.
+export function evaluatePkceCallback({ search, hash = '', handled = false }) {
+  const query = new URLSearchParams(search);
+  const fragment = new URLSearchParams(hash.replace(/^#/, ''));
+  const hasError = ERROR_PARAMS.some((k) => query.has(k) || fragment.has(k));
+  const code = query.get('code');
+  if (!hasError && code === null) return { strip: false, action: 'none' };
 
-// Decide what to do with the current URL after an OAuth return trip.
-// strip: remove hash/query auth params from the address bar.
-// result: null (not a callback), {error: true}, or {accessToken, refreshToken}.
-export function evaluateOAuthCallback({ hash, search, nonce }) {
-  const hashParams = new URLSearchParams(hash.replace(/^#/, ''));
-  const hasSensitiveHash = SENSITIVE_HASH_KEYS.some((k) => hashParams.has(k));
-  const hasQueryAuth = ['code', 'error'].some((k) =>
-    new URLSearchParams(search).has(k),
-  );
-  if (!hasSensitiveHash && !hasQueryAuth) return { strip: false, result: null };
-
-  if (new URLSearchParams(search).has('error')) {
-    return { strip: true, result: { error: true } };
+  if (hasError) return { strip: true, action: 'error' };
+  if (handled) return { strip: true, action: 'none' };
+  if (parseAuthorizationId(search) === null || !PKCE_CODE.test(code)) {
+    return { strip: true, action: 'error' };
   }
-  const callback = parseOAuthCallback(hash);
-  if (callback && !callback.error && nonce) {
-    return { strip: true, result: callback };
-  }
-  return { strip: true, result: hasSensitiveHash ? { error: true } : null };
+  return { strip: true, action: 'exchange', code };
 }
-
