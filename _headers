@@ -1,5 +1,5 @@
 /oauth/*
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://ctcwccqvkhxskppqtchb.supabase.co https://in-tolerance-production.up.railway.app; img-src 'self'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://ctcwccqvkhxskppqtchb.supabase.co https://in-tolerance-production.up.railway.app; img-src 'self'; font-src 'self'; form-action 'none'; base-uri 'none'; frame-ancestors 'none'
   X-Frame-Options: DENY
   Referrer-Policy: no-referrer
   X-Content-Type-Options: nosniff

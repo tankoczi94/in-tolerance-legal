@@ -4,75 +4,84 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
+  <meta name="color-scheme" content="light dark" />
   <title>Connect an assistant — in-tolerance</title>
+  <link rel="icon" type="image/png" href="/oauth/assets/logo.png" />
   <link rel="stylesheet" href="/oauth/consent.css" />
 </head>
 <body>
   <main>
-    <h1>in-tolerance</h1>
+    <header class="brand">
+      <img src="/oauth/assets/logo.png" width="48" height="48" alt="" />
+      <span>in-tolerance</span>
+    </header>
 
-    <p id="status" role="status" aria-live="polite">Loading…</p>
-    <p id="error" role="alert" hidden></p>
+    <div class="card">
+      <p id="status" role="status" aria-live="polite">Loading…</p>
+      <p id="error" role="alert" hidden></p>
 
-    <!-- Sign in / sign up -->
-    <section id="auth-view" hidden>
-      <h2 tabindex="-1">Sign in to continue</h2>
-      <form id="auth-form" novalidate>
-        <label for="email">Email</label>
-        <input id="email" type="email" autocomplete="email" required />
-        <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="current-password" minlength="8" required />
+      <!-- Sign in / sign up -->
+      <section id="auth-view" hidden aria-labelledby="auth-heading">
+        <h2 id="auth-heading" tabindex="-1">Sign in to continue</h2>
+        <p class="muted">Sign in to your in-tolerance account to connect it to an AI assistant.</p>
+        <form id="auth-form" novalidate>
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="email" required />
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" minlength="8" required />
 
-        <div id="signup-only" hidden>
+          <div id="signup-only" hidden>
+            <label class="check">
+              <input id="tos" type="checkbox" />
+              <span>I accept the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>
+                and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+            </label>
+            <label class="check">
+              <input id="signup-age" type="checkbox" />
+              <span>I am 18 years or older.</span>
+            </label>
+          </div>
+
+          <button id="auth-submit" type="submit">Sign in</button>
+          <button id="auth-toggle" type="button" class="link">Create an account instead</button>
+        </form>
+      </section>
+
+      <!-- Consent -->
+      <section id="consent-view" hidden aria-labelledby="consent-heading">
+        <h2 id="consent-heading" tabindex="-1"><span id="client-name"></span> wants access to your in-tolerance data</h2>
+        <p class="muted">After you decide, you return to: <strong id="redirect-host"></strong></p>
+
+        <h3>It will be able to</h3>
+        <ul class="scopes">
+          <li>Read your food diary, symptoms, sleep notes and detected patterns, including your children’s allergen introduction data (health data)</li>
+          <li>Add foods and log meals and symptoms for you</li>
+          <li>Free plan: only the last 7 days of data</li>
+        </ul>
+
+        <form id="consent-form">
+          <h3>Your consent</h3>
           <label class="check">
-            <input id="tos" type="checkbox" />
-            <span>I accept the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>
-              and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+            <input id="health-consent" type="checkbox" />
+            <span id="health-label"></span>
           </label>
           <label class="check">
-            <input id="signup-age" type="checkbox" />
-            <span>I am 18 years or older.</span>
+            <input id="age-confirmed" type="checkbox" />
+            <span id="age-label"></span>
           </label>
-        </div>
+          <label class="check">
+            <input id="marketing" type="checkbox" />
+            <span id="marketing-label"></span>
+          </label>
 
-        <button id="auth-submit" type="submit">Sign in</button>
-        <button id="auth-toggle" type="button" class="link">Create an account instead</button>
-      </form>
-    </section>
-
-    <!-- Consent -->
-    <section id="consent-view" hidden>
-      <h2 tabindex="-1"><span id="client-name"></span> wants to connect</h2>
-      <p class="muted">Returns you to: <strong id="redirect-host"></strong></p>
-
-      <h3>It will be able to</h3>
-      <ul>
-        <li>read your food diary, symptoms, sleep notes and patterns</li>
-        <li>add foods and log meals and symptoms for you</li>
-        <li>free plan: only the last 7 days of data</li>
-      </ul>
-
-      <form id="consent-form">
-        <label class="check">
-          <input id="health-consent" type="checkbox" />
-          <span id="health-label"></span>
-        </label>
-        <label class="check">
-          <input id="age-confirmed" type="checkbox" />
-          <span id="age-label"></span>
-        </label>
-        <label class="check">
-          <input id="marketing" type="checkbox" />
-          <span id="marketing-label"></span>
-        </label>
-
-        <div class="actions">
-          <button id="deny" type="button" class="secondary">Deny</button>
-          <button id="allow" type="submit" aria-describedby="allow-hint" disabled>Allow</button>
-        </div>
-        <p id="allow-hint" class="muted">Tick the health-data consent and the 18+ confirmation to enable Allow.</p>
-      </form>
-    </section>
+          <div class="actions">
+            <button id="deny" type="button" class="secondary">Deny</button>
+            <button id="allow" type="submit" aria-describedby="allow-hint" disabled>Approve</button>
+          </div>
+          <p id="allow-hint" class="muted">Tick the health-data consent and the 18+ confirmation to enable Approve.</p>
+        </form>
+      </section>
+    </div>
   </main>
 
   <script src="/oauth/vendor/supabase.js"></script>
