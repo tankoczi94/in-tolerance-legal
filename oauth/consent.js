@@ -18,7 +18,7 @@ import {
 // Public values (anon/publishable key is designed to be shipped to clients).
 const SUPABASE_URL = 'https://ctcwccqvkhxskppqtchb.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_0q374Sr_F5MQ5MfmQj40vg_CQkFIxQx';
-const API_URL = 'https://in-tolerance-production.up.railway.app';
+const API_URL = 'https://mcp.in-tolerance.app';
 
 const allowLocalhost = location.hostname === 'localhost';
 const $ = (id) => document.getElementById(id);
