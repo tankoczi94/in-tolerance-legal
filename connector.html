@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude connector — in-tolerance</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 800px; margin: 40px auto; padding: 0 24px; color: #222; line-height: 1.7; }
+    h1 { font-size: 1.8rem; border-bottom: 2px solid #eee; padding-bottom: 12px; }
+    h2 { font-size: 1.2rem; margin-top: 2rem; }
+    ul, ol { padding-left: 1.5rem; }
+    li { margin: 0.3rem 0; }
+    hr { border: none; border-top: 1px solid #eee; margin: 2rem 0; }
+    a { color: #1a73e8; }
+    code { background: #f4f4f4; padding: 1px 5px; border-radius: 3px; font-size: 0.92em; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+    th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+    blockquote { background: #fff8e1; border-left: 4px solid #f9a825; margin: 1rem 0; padding: 12px 16px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<h1>in-tolerance connector for Claude</h1>
+
+<p>The in-tolerance connector lets you ask Claude about the food, symptom and
+sleep entries you have logged in the in-tolerance app, and ask Claude to add
+new entries for you. It works on your own account only.</p>
+
+<blockquote>
+  in-tolerance shows patterns in your own logs. It is not medical advice and
+  does not diagnose allergies or intolerances. Talk to a clinician about
+  medical questions.
+</blockquote>
+
+<h2>Before you connect</h2>
+
+<ul>
+  <li>An in-tolerance account (sign up in the iOS or Android app).</li>
+  <li>You must be 18 or older.</li>
+  <li>Some tools need an in-tolerance Pro subscription; see the table below.</li>
+</ul>
+
+<h2>Connect</h2>
+
+<ol>
+  <li>In Claude, open <strong>Settings &rarr; Connectors</strong> and add <strong>in-tolerance</strong>.</li>
+  <li>Sign in to your in-tolerance account on the consent page (email or Google).</li>
+  <li>Read the consent text, confirm you are 18+, tick the health-data consent box and approve.</li>
+  <li>Claude can now use the tools below. Try: <em>&ldquo;What did I eat yesterday?&rdquo;</em></li>
+</ol>
+
+<p>Server URL (if Claude asks for it): <code>https://in-tolerance-production.up.railway.app/mcp</code></p>
+
+<h2>What Claude can do</h2>
+
+<table>
+  <thead><tr><th>Tool</th><th>What it does</th><th>Reads / writes</th></tr></thead>
+  <tbody>
+    <tr><td><code>search_food</code></td><td>Search food databases by name (allergens and calories where known)</td><td>Read</td></tr>
+    <tr><td><code>describe_food</code></td><td>Estimate ingredients and allergens of a food described in words (Pro)</td><td>Read</td></tr>
+    <tr><td><code>get_diary</code></td><td>Food entries for a date</td><td>Read</td></tr>
+    <tr><td><code>get_nutrition_summary</code></td><td>Daily calorie and macro totals for a date range</td><td>Read</td></tr>
+    <tr><td><code>get_symptoms</code></td><td>Symptom check-ins for a date range</td><td>Read</td></tr>
+    <tr><td><code>get_pattern_alerts</code>, <code>get_discoveries</code></td><td>Patterns found in your own logs, with a confidence level</td><td>Read</td></tr>
+    <tr><td><code>get_insights</code></td><td>Your latest weekly insight (Pro)</td><td>Read</td></tr>
+    <tr><td><code>list_allergens</code>, <code>list_symptom_types</code></td><td>Reference lists used when logging</td><td>Read</td></tr>
+    <tr><td><code>list_children</code>, <code>get_child_reactions</code></td><td>Child profiles and reaction records, only if your account has a child</td><td>Read</td></tr>
+    <tr><td><code>log_food</code>, <code>add_food</code></td><td>Add a food entry; create a private food that search did not find</td><td>Write</td></tr>
+    <tr><td><code>log_symptom</code>, <code>log_sleep</code></td><td>Add a symptom check-in or sleep-quality entry</td><td>Write</td></tr>
+    <tr><td><code>log_allergen_introduction</code></td><td>Record an allergen introduction for a child, only if your account has a child</td><td>Write</td></tr>
+  </tbody>
+</table>
+
+<p>Free accounts can use the connector with a shorter history window. Entries
+Claude creates are labelled &ldquo;via Assistant&rdquo; in the app.</p>
+
+<h2>Your data and control</h2>
+
+<ul>
+  <li>Claude only receives what a request needs, and only after you consent.</li>
+  <li>Anthropic handles data it receives under its own privacy policy. See our
+  <a href="/privacy">Privacy Policy</a> for details.</li>
+  <li>Disconnect at any time in the app under <strong>Profile &rarr; Connected apps</strong>,
+  or remove the connector in Claude. Disconnecting stops further access.</li>
+  <li>To delete entries or your account, see <a href="/support">Support</a>.</li>
+</ul>
+
+<h2>Troubleshooting</h2>
+
+<ul>
+  <li><strong>&ldquo;Couldn&rsquo;t reach the MCP server&rdquo; or sign-in fails:</strong> remove the connector and add it again.</li>
+  <li><strong>A tool is missing:</strong> child tools appear only when your account has a child; <code>describe_food</code> and <code>get_insights</code> need Pro.</li>
+  <li><strong>Still stuck:</strong> email <a href="mailto:support@in-tolerance.app">support@in-tolerance.app</a> with your account email and what happened.</li>
+</ul>
+
+<h2>Other links</h2>
+
+<ul>
+  <li><a href="/privacy">Privacy Policy</a></li>
+  <li><a href="/terms">Terms of Service</a></li>
+  <li><a href="/support">Support</a></li>
+</ul>
+
+</body>
+</html>

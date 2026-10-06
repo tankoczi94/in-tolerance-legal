@@ -1,7 +1,7 @@
 # Privacy Policy — in-tolerance
 
 **Effective date:** May 24, 2026
-**Last updated:** October 3, 2026
+**Last updated:** October 6, 2026
 **Data controller:** Tamas Tankoczi, Budapest, Hungary
 **Contact:** support@in-tolerance.app
 
@@ -112,6 +112,32 @@ We do **not** identify you to Sentry: no account ID or email is attached,
 and the Authorization header, request body, and cookies are stripped before
 an error is sent. Crash/diagnostic data is therefore **not linked to your
 identity**. We do not collect performance-tracing data.
+
+### AI assistants (optional connector)
+
+You can choose to connect your in-tolerance account to an AI assistant such
+as Claude (Anthropic) or ChatGPT (OpenAI). Nothing is shared until you do.
+You sign in on our consent page, confirm you are 18 or older, and explicitly
+consent to sharing your health data with that assistant.
+
+- **What the assistant can read, at your request:** your food diary,
+  symptom check-ins, sleep notes, detected food-reaction patterns and
+  weekly insights, nutrition summaries, and the allergen introduction and
+  reaction records of any children recorded in your account.
+- **What it can create, only when you ask it to:** food, symptom, sleep and
+  allergen-introduction entries. These are labelled "via Assistant" in the app.
+- **What it cannot access:** your password, payment details, or other
+  accounts.
+- **After the data leaves us:** the assistant provider receives the data you
+  ask it to retrieve as an independent controller under its own privacy
+  policy and terms. We do not control how it is stored or used there, and we
+  cannot delete it from the provider's systems or your chats.
+- **Control:** see and revoke connections any time under Profile → Connected
+  apps. Revoking stops further access. You can also delete entries or your
+  account (Section 7). We keep a record of each connection and your consent
+  (assistant, date, wording version) to prove consent and secure your account.
+- **Legal basis:** your explicit consent (GDPR Art. 6(1)(a) and 9(2)(a)),
+  which you can withdraw by disconnecting.
 
 ## 5. International data transfers
 
