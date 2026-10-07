@@ -1,7 +1,7 @@
 // Consent wording shown on /oauth/consent. The SHA-256 of CONSENT_TEXT is
 // stored with every consent record, so ANY wording change must bump
-// CONSENT_VERSION. Wording is pending counsel review (see
-// docs/compliance/ai-connector-compliance.md in the app repo).
+// CONSENT_VERSION. See docs/compliance/ai-connector-compliance.md in the
+// app repo for the wording rationale.
 export const CONSENT_VERSION = '2026-10-07';
 
 export const HEALTH_CONSENT_LABEL =

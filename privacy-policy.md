@@ -32,6 +32,7 @@ data, and we do **not** use it for advertising or cross-app tracking.
 | Photos (optional) | A food photo you choose to submit to the AI food-logging feature (Pro) | Sent to our AI provider (Google Gemini) to identify the food and estimate its contents. Processed in transit only — we do **not** store it on our servers |
 | Purchases | Subscription status | To unlock paid features |
 | Diagnostics | Crash reports and basic device/OS diagnostic context | Stability — diagnosing and fixing crashes. **Not linked to your identity** (no account ID or email is attached) |
+| Child profiles (optional) | Name, date of birth, allergen introduction and reaction records you enter as a parent or legal guardian | Core app functionality — tracking allergen introductions |
 
 **Special-category data.** Food-intolerance, symptom, and sleep data may
 reveal information about your health. We process it only to provide the app
@@ -118,10 +119,11 @@ identity**. We do not collect performance-tracing data.
 You can choose to connect your in-tolerance account to an AI assistant such
 as Claude (Anthropic) or ChatGPT (OpenAI). Nothing is shared until you do.
 You sign in on our consent page, confirm you are 18 or older, and explicitly
-consent to sharing your health data with that assistant.
+consent to sharing your health data with that assistant. The connector is
+for users 18 or older, while the app itself is for users 13 and older.
 
 - **What the assistant can read, at your request:** your food diary,
-  symptom check-ins, sleep notes, patterns found in your own logs and
+  child name and age, symptom check-ins, sleep notes, patterns found in your own logs and
   weekly insights, nutrition summaries, and the allergen introduction and
   reaction records of any children recorded in your account.
 - **What it can create, only when you ask it to:** food, symptom, sleep and
@@ -200,6 +202,10 @@ processing without parental authorization varies by country (13–16 under
 GDPR Art. 8). Where you are below that age in your country, a parent or
 guardian must consent on your behalf. *(The exact threshold per
 jurisdiction varies by country.)*
+
+You may record a child's data only as their parent or legal guardian.
+The AI-assistant connector is for users 18 or older; the app itself is for
+users 13 and older.
 
 ## 9. Security
 
