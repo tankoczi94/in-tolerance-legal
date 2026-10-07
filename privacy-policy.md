@@ -121,7 +121,7 @@ You sign in on our consent page, confirm you are 18 or older, and explicitly
 consent to sharing your health data with that assistant.
 
 - **What the assistant can read, at your request:** your food diary,
-  symptom check-ins, sleep notes, detected food-reaction patterns and
+  symptom check-ins, sleep notes, patterns found in your own logs and
   weekly insights, nutrition summaries, and the allergen introduction and
   reaction records of any children recorded in your account.
 - **What it can create, only when you ask it to:** food, symptom, sleep and

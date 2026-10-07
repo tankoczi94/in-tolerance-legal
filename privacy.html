@@ -64,6 +64,7 @@ data, and we do <strong>not</strong> use it for advertising or cross-app trackin
     <tr><td>Photos (optional)</td><td>A food photo you choose to submit to the AI food-logging feature (Pro)</td><td>Sent to our AI provider (Google Gemini) to identify the food and estimate its contents. Processed in transit only — we do <strong>not</strong> store it on our servers</td></tr>
     <tr><td>Purchases</td><td>Subscription status</td><td>To unlock paid features</td></tr>
     <tr><td>Diagnostics</td><td>Crash reports and basic device/OS diagnostic context</td><td>Stability — diagnosing and fixing crashes. <strong>Not linked to your identity</strong> (no account ID or email is attached)</td></tr>
+    <tr><td>Child profiles (optional)</td><td>Name, date of birth, allergen introduction and reaction records you enter as a parent or legal guardian</td><td>Core app functionality — tracking allergen introductions</td></tr>
   </tbody>
 </table>
 
@@ -142,16 +143,17 @@ and the Authorization header, request body, and cookies are stripped before
 an error is sent. Crash/diagnostic data is therefore <strong>not linked to your
 identity</strong>. We do not collect performance-tracing data.</p>
 
-<h3>AI assistants (optional connector)</h3>
+<h3 id="ai-assistants">AI assistants (optional connector)</h3>
 
 <p>You can choose to connect your in-tolerance account to an AI assistant such
 as Claude (Anthropic) or ChatGPT (OpenAI). Nothing is shared until you do.
 You sign in on our consent page, confirm you are 18 or older, and explicitly
-consent to sharing your health data with that assistant.</p>
+consent to sharing your health data with that assistant. The connector is
+for users 18 or older, while the app itself is for users 13 and older.</p>
 
 <ul>
   <li><strong>What the assistant can read, at your request:</strong> your food diary,
-  symptom check-ins, sleep notes, detected food-reaction patterns and
+  child name and age, symptom check-ins, sleep notes, patterns found in your own logs and
   weekly insights, nutrition summaries, and the allergen introduction and
   reaction records of any children recorded in your account.</li>
   <li><strong>What it can create, only when you ask it to:</strong> food, symptom, sleep and
@@ -224,6 +226,10 @@ processing without parental authorization varies by country (13–16 under
 GDPR Art. 8). Where you are below that age in your country, a parent or
 guardian must consent on your behalf. <em>(The exact threshold per
 jurisdiction varies by country.)</em></p>
+
+<p>You may record a child&rsquo;s data only as their parent or legal guardian.
+The AI-assistant connector is for users 18 or older; the app itself is for
+users 13 and older.</p>
 
 <h2>9. Security</h2>
 

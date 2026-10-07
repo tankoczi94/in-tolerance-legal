@@ -28,8 +28,8 @@ new entries for you. It works on your own account only.</p>
 
 <blockquote>
   in-tolerance shows patterns in your own logs. It is not medical advice and
-  does not diagnose allergies or intolerances. Talk to a clinician about
-  medical questions.
+  does not diagnose allergies or intolerances. Allergies can be serious; see a
+  clinician. Talk to a clinician about medical questions.
 </blockquote>
 
 <h2>Before you connect</h2>
@@ -37,10 +37,14 @@ new entries for you. It works on your own account only.</p>
 <ul>
   <li>An in-tolerance account (sign up in the iOS or Android app).</li>
   <li>You must be 18 or older.</li>
-  <li>Some tools need an in-tolerance Pro subscription; see the table below.</li>
+  <li>Weekly insights and AI food description are available on accounts with an active subscription; see the table below.</li>
 </ul>
 
 <h2>Connect</h2>
+
+<p>Connecting shares your health data (food, symptoms, sleep, child allergen
+records) with Claude, with your consent. See the
+<a href="/privacy#ai-assistants">Privacy Policy</a>.</p>
 
 <ol>
   <li>In Claude, open <strong>Settings &rarr; Connectors</strong> and add <strong>in-tolerance</strong>.</li>
@@ -57,12 +61,12 @@ new entries for you. It works on your own account only.</p>
   <thead><tr><th>Tool</th><th>What it does</th><th>Reads / writes</th></tr></thead>
   <tbody>
     <tr><td><code>search_food</code></td><td>Search food databases by name (allergens and calories where known)</td><td>Read</td></tr>
-    <tr><td><code>describe_food</code></td><td>Estimate ingredients and allergens of a food described in words (Pro)</td><td>Read</td></tr>
+    <tr><td><code>describe_food</code></td><td>Estimate ingredients and allergens of a food described in words (subscription)</td><td>Read</td></tr>
     <tr><td><code>get_diary</code></td><td>Food entries for a date</td><td>Read</td></tr>
     <tr><td><code>get_nutrition_summary</code></td><td>Daily calorie and macro totals for a date range</td><td>Read</td></tr>
     <tr><td><code>get_symptoms</code></td><td>Symptom check-ins for a date range</td><td>Read</td></tr>
     <tr><td><code>get_pattern_alerts</code>, <code>get_discoveries</code></td><td>Patterns found in your own logs, with a confidence level</td><td>Read</td></tr>
-    <tr><td><code>get_insights</code></td><td>Your latest weekly insight (Pro)</td><td>Read</td></tr>
+    <tr><td><code>get_insights</code></td><td>Your latest weekly insight (subscription)</td><td>Read</td></tr>
     <tr><td><code>list_allergens</code>, <code>list_symptom_types</code></td><td>Reference lists used when logging</td><td>Read</td></tr>
     <tr><td><code>list_children</code>, <code>get_child_reactions</code></td><td>Child profiles and reaction records, only if your account has a child</td><td>Read</td></tr>
     <tr><td><code>log_food</code>, <code>add_food</code></td><td>Add a food entry; create a private food that search did not find</td><td>Write</td></tr>
@@ -71,14 +75,15 @@ new entries for you. It works on your own account only.</p>
   </tbody>
 </table>
 
-<p>Free accounts can use the connector with a shorter history window. Entries
+<p>Free accounts can use the connector with the last 7 days of data. Entries
 Claude creates are labelled &ldquo;via Assistant&rdquo; in the app.</p>
 
 <h2>Your data and control</h2>
 
 <ul>
   <li>Claude only receives what a request needs, and only after you consent.</li>
-  <li>Anthropic handles data it receives under its own privacy policy. See our
+  <li>Anthropic receives data as an independent controller under its own
+  <a href="https://www.anthropic.com/legal/privacy" rel="noopener">privacy policy</a>. See our
   <a href="/privacy">Privacy Policy</a> for details.</li>
   <li>Disconnect at any time in the app under <strong>Profile &rarr; Connected apps</strong>,
   or remove the connector in Claude. Disconnecting stops further access.</li>
@@ -89,7 +94,7 @@ Claude creates are labelled &ldquo;via Assistant&rdquo; in the app.</p>
 
 <ul>
   <li><strong>&ldquo;Couldn&rsquo;t reach the MCP server&rdquo; or sign-in fails:</strong> remove the connector and add it again.</li>
-  <li><strong>A tool is missing:</strong> child tools appear only when your account has a child; <code>describe_food</code> and <code>get_insights</code> need Pro.</li>
+  <li><strong>A tool is missing:</strong> child tools appear only when your account has a child; <code>describe_food</code> and <code>get_insights</code> need an active subscription.</li>
   <li><strong>Still stuck:</strong> email <a href="mailto:support@in-tolerance.app">support@in-tolerance.app</a> with your account email and what happened.</li>
 </ul>
 
