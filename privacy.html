@@ -30,7 +30,7 @@
 
 <div class="meta">
   <p><strong>Effective date:</strong> May 24, 2026</p>
-  <p><strong>Last updated:</strong> October 6, 2026</p>
+  <p><strong>Last updated:</strong> October 31, 2026</p>
   <p><strong>Data controller:</strong> Tamas Tankoczi, Budapest, Hungary</p>
   <p><strong>Contact:</strong> <a href="mailto:support@in-tolerance.app">support@in-tolerance.app</a></p>
 </div>
@@ -64,6 +64,9 @@ data, and we do <strong>not</strong> use it for advertising or cross-app trackin
     <tr><td>Photos (optional)</td><td>A food photo you choose to submit to the AI food-logging feature (Pro)</td><td>Sent to our AI provider (Google Gemini) to identify the food and estimate its contents. Processed in transit only — we do <strong>not</strong> store it on our servers</td></tr>
     <tr><td>Purchases</td><td>Subscription status</td><td>To unlock paid features</td></tr>
     <tr><td>Diagnostics</td><td>Crash reports and basic device/OS diagnostic context</td><td>Stability — diagnosing and fixing crashes. <strong>Not linked to your identity</strong> (no account ID or email is attached)</td></tr>
+    <tr><td>Usage analytics (optional, can be turned off)</td><td>Pseudonymous account UUID; app-open and screen names; counts and categories of actions (e.g. "a food was logged", search result-count bucket, paywall shown). Never food, symptom or allergen names, notes, or any health content; no session recording</td><td>Understanding which features work and where people drop off. Turn off under Profile → "Share usage analytics"</td></tr>
+    <tr><td>Service logs (not tied to your identity)</td><td>Food-search terms and the results returned, with timing and provider status — stored <strong>without</strong> your account ID; usage counts of AI requests (with token counts) per account for quota and cost control; which pattern-alert or discovery cards you opened or acted on (linked to your account)</td><td>Improving search quality, enforcing fair-use limits, and understanding which features are useful</td></tr>
+    <tr><td>AI-assistant connection records</td><td>Which assistant you connected, the date, the consent-text version and its hash, your 18+ confirmation, and access-token metadata</td><td>Proving your consent, letting you review and revoke connections, and securing your account</td></tr>
     <tr><td>Child profiles (optional)</td><td>Name, date of birth, allergen introduction and reaction records you enter as a parent or legal guardian</td><td>Core app functionality — tracking allergen introductions</td></tr>
   </tbody>
 </table>
@@ -93,7 +96,7 @@ delete imported entries like any other sleep log.</p>
   <li>Precise or coarse location.</li>
   <li>Video or audio recordings. Barcode scanning uses the camera <strong>only</strong> to read a barcode — no image is captured or stored. Separately, the optional AI food-logging feature (Pro) lets you submit a single food photo; it is sent to our AI provider to identify the food (Section 4) and is <strong>not</strong> stored on our servers afterward.</li>
   <li>Contacts, calendars, or device address book.</li>
-  <li>Browsing or search history. Food-search terms are passed to our food-data providers (Section 4) to return results and are <strong>not</strong> stored as records linked to you.</li>
+  <li>Browsing history. Food-search terms are passed to our food-data providers (Section 4) to return results. We keep a copy of the search term and results for search-quality purposes, but <strong>without</strong> your account ID, so it is not linked to you.</li>
   <li>Advertising identifiers (IDFA), marketing or ad-tech data. The app contains no ad SDK and presents no App Tracking Transparency prompt because no cross-app tracking occurs.</li>
   <li>Payment card or bank details. If you purchase a subscription, the transaction is handled entirely by the app store you bought it through (Apple App Store or Google Play); payment details never reach our servers.</li>
 </ul>
@@ -109,7 +112,7 @@ delete imported entries like any other sleep log.</p>
   <li>To meet legal obligations and enforce our Terms.</li>
 </ul>
 
-<p>We do <strong>not</strong> use your data for profiling for advertising, automated decisions with legal effect, or sale to third parties.</p>
+<p>We use pseudonymous usage analytics and anonymous service logs only to improve the app. We do <strong>not</strong> use your data for profiling for advertising, automated decisions with legal effect, or sale to third parties.</p>
 
 <h2>4. Sub-processors and third parties</h2>
 
@@ -129,9 +132,15 @@ delete imported entries like any other sleep log.</p>
     <tr><td>Google (Play Billing)</td><td>Subscription payments (Android)</td><td>Purchase/subscription state</td><td>Yes — Google-managed</td></tr>
     <tr><td>RevenueCat</td><td>Subscription and entitlement management</td><td>App-store user identifier, subscription state</td><td>Yes — sub-processor</td></tr>
     <tr><td>Google LLC (Gemini API)</td><td>AI-powered weekly insights, food matching, dietitian tips, and AI food logging (Pro users only)</td><td>Food logs, symptom check-ins, sleep scores, and any food photo you submit to AI food logging — sent server-side only; no Gemini SDK on device. Photos are processed transiently and not stored by us</td><td>No — processed server-side, not linked to your identity by Google</td></tr>
+    <tr><td>PostHog (EU cloud)</td><td>Product analytics (optional; off if you disable "Share usage analytics")</td><td>Pseudonymous account UUID, device/OS context, event names and behavioural counts. <strong>No</strong> email, name, or health content; session replay is off</td><td>Pseudonymous — sub-processor</td></tr>
+    <tr><td>ConfigCat</td><td>Feature flags</td><td>Account UUID, to switch features on or off for you. No health data</td><td>Pseudonymous — sub-processor</td></tr>
     <tr><td>Sentry</td><td>Crash/error reporting</td><td>Crash stack traces + device/OS context. <strong>No</strong> account ID, email, or request bodies (we do not identify you to Sentry)</td><td>No — not linked to identity</td></tr>
   </tbody>
 </table>
+
+<p>We do not sell personal data and do not share it with anyone other than the
+processors above and, if you choose to connect one, the AI assistant provider
+described below. We may also disclose data where required by law.</p>
 
 <p>Calls to FatSecret, Open Food Facts, and USDA originate from our backend, never directly from
 your device, so those providers do not receive your identity or device information.</p>
@@ -158,11 +167,25 @@ for users 18 or older, while the app itself is for users 13 and older.</p>
   reaction records of any children recorded in your account.</li>
   <li><strong>What it can create, only when you ask it to:</strong> food, symptom, sleep and
   allergen-introduction entries. These are labelled &ldquo;via Assistant&rdquo; in the app.</li>
+  <li><strong>What it sends to us (inputs):</strong> only what the assistant passes when it calls a
+  tool: search terms, a short food description (max 500 characters), dates, and the details of
+  entries you ask it to log (food, symptom, sleep, allergen introduction). Search terms go to our
+  food-data providers, and a food description goes to Google Gemini (Section 4) and counts against
+  your daily AI quota. Entries it creates are stored in your account like any other log.</li>
+  <li><strong>What it receives from us (outputs):</strong> the records described above, limited to
+  the dates and children your request concerns (free accounts: last 7 days). Responses contain no
+  email address, password, or payment details.</li>
   <li><strong>What it cannot access:</strong> your password, payment details, or other accounts.</li>
+  <li><strong>Recipients:</strong> the assistant you connect (Anthropic for Claude, OpenAI for
+  ChatGPT) and, for the tools above, the processors in the table. Nobody else.</li>
   <li><strong>After the data leaves us:</strong> the assistant provider receives the data you
   ask it to retrieve as an independent controller under its own privacy
-  policy and terms. We do not control how it is stored or used there, and we
+  policy and terms (including how long it keeps it and whether it uses it to improve
+  its models, which you control in that provider&rsquo;s settings). We do not control how it is stored or used there, and we
   cannot delete it from the provider&rsquo;s systems or your chats.</li>
+  <li><strong>Retention:</strong> connection and consent records are kept while your account
+  exists and are deleted with it. Access tokens expire automatically and stop working when you
+  revoke the connection. We do not store the content of your conversations with the assistant.</li>
   <li><strong>Control:</strong> see and revoke connections any time under Profile &rarr; Connected
   apps. Revoking stops further access. You can also delete entries or your
   account (Section 7). We keep a record of each connection and your consent
@@ -187,6 +210,7 @@ the mandatory data-protection rights of your country of residence.</p>
   <li>Account and log data are retained for as long as your account exists.</li>
   <li>When you delete a log entry it is removed promptly.</li>
   <li>When you delete your account (Section 7) all account-linked data is erased from our database, including dependent records that cascade from your user row (e.g. content reports and blocks). Provider-side backups are rotated out within the provider's standard cycle.</li>
+  <li>Anonymous food-search logs (no account ID) have no fixed expiry; we delete them when they are no longer needed to improve search. Pseudonymous analytics are retained by PostHog for as long as we need them for product analysis, and are deleted from our analytics project on request. Crash reports are retained by Sentry for its standard period (about 90 days).</li>
   <li>Aggregate, fully de-identified statistics that cannot be linked back to you may be retained.</li>
 </ul>
 
@@ -199,6 +223,8 @@ the mandatory data-protection rights of your country of residence.</p>
   <li><strong>Erasure.</strong> Settings → "Delete account" permanently deletes your account and associated data after a typed confirmation. This is irreversible.</li>
   <li><strong>Rectification.</strong> Edit or delete any log entry directly in the app.</li>
   <li><strong>Withdraw consent / restrict / object.</strong> Stop using a feature, delete the data, or contact us.</li>
+  <li><strong>Usage analytics.</strong> Turn off Profile → "Share usage analytics" at any time; no further analytics events are sent.</li>
+  <li><strong>AI assistant connections.</strong> Review and revoke under Profile → Connected apps.</li>
   <li><strong>Password reset.</strong> "Forgot password?" on the sign-in screen sends a one-time code to your email.</li>
 </ul>
 
